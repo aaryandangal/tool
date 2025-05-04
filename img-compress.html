@@ -58,6 +58,7 @@
             background-color: #f9f9f9;
             padding: 0;
             margin: 0;
+            -webkit-tap-highlight-color: transparent;
         }
         
         header {
@@ -315,6 +316,8 @@
             background-color: var(--secondary-color);
             margin-top: 1rem;
             width: 100%;
+            padding: 0.75rem;
+            font-size: 1rem;
         }
         
         .download-btn:hover {
@@ -449,6 +452,15 @@
             .result-grid {
                 grid-template-columns: 1fr;
             }
+            
+            .download-btn {
+                padding: 1rem;
+                font-size: 1.1rem;
+            }
+            
+            .upload-area {
+                padding: 2rem 1rem;
+            }
         }
         
         /* Loading spinner */
@@ -466,6 +478,11 @@
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
+        }
+        
+        /* Mobile download fix */
+        .download-link {
+            display: none;
         }
     </style>
 </head>
@@ -490,12 +507,12 @@
             <div>
                 <div class="ad-label">Advertisement</div>
                 <!-- Google AdSense code with your publisher ID and slot ID -->
-                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8579218806388644"></script>
+                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-app-pub-8579218806388644"></script>
                 <!-- Image Compressor Top Banner -->
                 <ins class="adsbygoogle"
                      style="display:block"
-                     data-ad-client="ca-pub-8579218806388644"
-                     data-ad-slot="3004620015"
+                     data-ad-client="ca-app-pub-8579218806388644"
+                     data-ad-slot="8202248014"
                      data-ad-format="auto"
                      data-full-width-responsive="true"></ins>
                 <script>
@@ -559,12 +576,12 @@
             <div>
                 <div class="ad-label">Advertisement</div>
                 <!-- Google AdSense code with your publisher ID -->
-                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8579218806388644"></script>
+                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-app-pub-8579218806388644"></script>
                 <!-- Image Compressor Middle Rectangle -->
                 <ins class="adsbygoogle"
                      style="display:block"
-                     data-ad-client="ca-pub-8579218806388644"
-                     data-ad-slot="7066319801"
+                     data-ad-client="ca-app-pub-8579218806388644"
+                     data-ad-slot="4525585242"
                      data-ad-format="rectangle"
                      data-full-width-responsive="true"></ins>
                 <script>
@@ -593,12 +610,12 @@
             <div>
                 <div class="ad-label">Advertisement</div>
                 <!-- Google AdSense code with your publisher ID and slot ID -->
-                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8579218806388644"></script>
+                <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-app-pub-8579218806388644"></script>
                 <!-- Image Compressor Bottom Banner -->
                 <ins class="adsbygoogle"
                      style="display:block"
-                     data-ad-client="ca-pub-8579218806388644"
-                     data-ad-slot="1050516308"
+                     data-ad-client="ca-app-pub-8579218806388644"
+                     data-ad-slot="9311008066"
                      data-ad-format="auto"
                      data-full-width-responsive="true"></ins>
                 <script>
@@ -832,22 +849,18 @@
                     </div>
                     
                     <button class="download-btn" data-file="${result.compressed.name}">Download Compressed Image</button>
+                    <a href="${URL.createObjectURL(result.compressed)}" download="${result.compressed.name}" class="download-link" id="dl-${result.compressed.name}"></a>
                 `;
                 
                 resultGrid.appendChild(resultCard);
-            });
-            
-            // Add download event listeners
-            document.querySelectorAll('.download-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
+                
+                // Add click event for mobile download
+                const downloadBtn = resultCard.querySelector('.download-btn');
+                downloadBtn.addEventListener('click', function() {
                     const fileName = this.getAttribute('data-file');
-                    const result = results.find(r => r.compressed.name === fileName);
-                    
-                    if (result) {
-                        const link = document.createElement('a');
-                        link.href = URL.createObjectURL(result.compressed);
-                        link.download = result.compressed.name;
-                        link.click();
+                    const downloadLink = document.getElementById(`dl-${fileName}`);
+                    if (downloadLink) {
+                        downloadLink.click();
                     }
                 });
             });
